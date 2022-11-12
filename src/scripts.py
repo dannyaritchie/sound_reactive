@@ -20,4 +20,4 @@ for i in activation_frames:
     print(i)
 print(features.duration)
 df=pd.DataFrame(columns=['Beat activation'],data=activation_frames)
-df.to_csv('beat_activations.csv',index=False)
+df.to_csv('data.csv',index=True)

@@ -17,7 +17,7 @@ class Feature_extractorx():
         activation_times=None
         if sound == 'beat':
             activation_times=self.beat_times
-        activation_frames=np.full((number_of_frames),False) 
+        activation_frames=np.full((number_of_frames),0) 
         frame_index=0
         for i in activation_times:
             time=frame_index*frame_duration
@@ -25,6 +25,6 @@ class Feature_extractorx():
                     frame_index +=1
                     time=frame_index*frame_duration
             if frame_index<number_of_frames-1:
-                activation_frames[frame_index-1]=True
+                activation_frames[frame_index-1]=1
         return activation_frames
 
