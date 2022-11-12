@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 from librosa_class import *
 
 #set number of frames and frame duration
@@ -14,6 +15,9 @@ sound_type='beat'
 activation_frames=features.get_activation_frame(
     n_frames,frame_duration,sound_type)
 
+
 for i in activation_frames:
     print(i)
 print(features.duration)
+df=pd.DataFrame(columns=['Beat activation'],data=activation_frames)
+df.to_csv('beat_activations.csv',index=False)
