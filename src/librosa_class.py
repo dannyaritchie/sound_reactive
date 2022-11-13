@@ -1,13 +1,17 @@
 import librosa
 import numpy as np
+from IPython.display import Audio
+import soundfile as sf
+
 class Feature_extractorx():
 
     def __init__(self,filename):
         self.filename=filename
-        y, sr = librosa.load(filename)
-        self.tempo, self.beat_frames = librosa.beat.beat_track(y=y, sr=sr)
-        self.beat_times = librosa.frames_to_time(self.beat_frames, sr=sr)
-        self.duration=librosa.get_duration(y=y,sr=sr)
+        self.y, self.sr = librosa.load(filename)
+        self.tempo, self.beat_frames = librosa.beat.beat_track(
+            y=self.y,sr=self.sr)
+        self.beat_times = librosa.frames_to_time(self.beat_frames, sr=self.sr)
+        self.duration=librosa.get_duration(y=self.y,sr=self.sr)
         return
     def get_activation_frame(self,number_of_frames,frame_duration,sound):
         #sound: a string descpripor for an array of sound activation times
@@ -27,4 +31,9 @@ class Feature_extractorx():
             if frame_index<number_of_frames-1:
                 activation_frames[frame_index-1]=True
         return activation_frames
+    def get_percussive_data(self):
+        y_harmonic, y_percussive = librosa.effects.hpss(self.y)
+        Audio(data=y_percussive, rate=self.sr)
+        sf.write('percussive.wav',y_percussive,self.sr)
+        sf.write('harmonic.wav',y_harmonic,self.sr)
 
