@@ -68,6 +68,6 @@ void draw(){
   
   //println(fps);
   
-  saveFrame("frames5/frame-####.png");
+  saveFrame("frames6/frame-####.png");
   
 }
