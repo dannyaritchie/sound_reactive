@@ -14,14 +14,19 @@
 class ParticleBoom{
   
   int min_radius = 100; // radius when all particles are contracted
-  int no_particles = 500; // number of points
+  int no_particles = 700; // number of points
   float[] max_extend = new float[no_particles]; // each particle will be assign a max_extent to determine the max distance it can move out
   float[] x_position = new float[no_particles];
   float extender; // extender will move the particles outwards and inwards in time with the sound
   int screen_width;
   int screen_height;
+  float x_sphere_centre;
+  float y_sphere_centre;
+  float z_sphere_centre = 0;
+  int sphere_radius = 50;
   int extend;
   float[] expansion_percent;
+  PVector[] displacement_vectors = new PVector[no_particles];
   
   int[] dist_from_1;
   int[] dist_to_1;
@@ -31,16 +36,27 @@ class ParticleBoom{
   ParticleBoom(int wide, int high, IntList beat){
     screen_width = wide;
     screen_height = high;
+    
+    x_sphere_centre = screen_width/2;
+    y_sphere_centre = screen_height/2;
 
-    extend = screen_height;
-
+    extend = screen_height/3;
+    
     for (int i=0; i<no_particles; i++){
       max_extend[i] = random(0,extend);
     }
     
+    PVector centre = new PVector(x_sphere_centre, y_sphere_centre, z_sphere_centre);
+    
     for (int i=0; i<no_particles; i++){
-      x_position[i] = random(0,screen_width);
+      float x = random(-1,1);
+      float y = random(-1,1);
+      float z = random(-1,1);
+      PVector displacement = new PVector(x,y,z);
+      displacement.setMag(sphere_radius);
+      displacement_vectors[i] = displacement;
     }
+
     
 
     // create array that tells us for each frame how many frame from the last 1
@@ -130,13 +146,30 @@ class ParticleBoom{
   
   void display(int frame){
     
+    
+    
+    // have xyz PVector for displacement of point from the centre of the circle.
+    // all displacement vectors will simply have the same magnitude.  
+    // then any given point is given by position vector of the centre + displacement vector
+    // to generate displacement vector, choose any random x, y, z float between -1 and 1 and then adjust the vector magnitude to equal the sphere radius
+    
+    
     for (int i=0; i<no_particles; i++){
-      float x_val = x_position[i];
-      float y_val = map(expansion_percent[frame],0,1,0,max_extend[i]);
-      
+      PVector displacement = displacement_vectors[i];
+      displacement.setMag(sphere_radius+(max_extend[i]*expansion_percent[frame]));
+      //float x = x_sphere_centre + displacement.x;
+      //float y = y_sphere_centre + displacement.y;
+      //float z = z_sphere_centre + displacement.z;
+
+      pushMatrix();
+      translate(x_sphere_centre, y_sphere_centre, z_sphere_centre);
+      rotateY(map(frame,0,500,0,2*PI));
+      rotateX(map(frame,0,500,0,PI));
+      translate(displacement.x, displacement.y, displacement.z);
       noStroke();
-      fill(map(frame,0,500,0,255),200,200);
-      circle(x_val,y_val,5);
+      fill(map(i,0,no_particles,0,100),200,200);
+      sphere(2);
+      popMatrix();
       
     }
     

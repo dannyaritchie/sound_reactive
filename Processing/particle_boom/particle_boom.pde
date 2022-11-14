@@ -21,8 +21,9 @@ ParticleBoom boom;
 
 void setup() {
   
-  size(800,400, P3D);
+  size(800,800, P3D);
   background(0);
+  colorMode(HSB,100,100,100);
   //noLoop();
 
   table = loadTable("data.csv", "header"); 
@@ -47,5 +48,5 @@ void draw(){
   frame+=1;
   println(frame);
   
-  saveFrame("frames5/frame-####.png");
+  saveFrame("frames6/frame-####.png");
 }
