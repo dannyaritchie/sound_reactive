@@ -2,11 +2,14 @@ import numpy as np
 import pandas as pd
 from librosa_class import *
 
-#set number of frames and frame duration
-n_frames=500 #included for testing purposes
-frame_duration=50 #ms
+#set fps and song length
+fps = 40
+song_len = 240 #s
 #choose song name
-song_name="../media/bubbles.wav"
+song_name="../media/crimewave.mp3"
+# calculate frame duration and number of frames
+frame_duration = (1/fps)*1000 #ms
+n_frames = song_len /(frame_duration*1000)
 #class for feature extraction
 features=Feature_extractorx(song_name)
 #set sound type
@@ -22,4 +25,4 @@ print(features.duration)
 df=pd.DataFrame(columns=['Beat activation'],data=activation_frames)
 df.to_csv('beat_activations.csv',index=False)
 features.get_percussive_data()
-df.to_csv('data.csv',index=True)
+df.to_csv('data.csv',index=True) # same as beat_activations.csv ?

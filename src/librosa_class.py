@@ -14,10 +14,10 @@ class Feature_extractorx():
         self.duration=librosa.get_duration(y=self.y,sr=self.sr)
         return
     def get_activation_frame(self,number_of_frames,frame_duration,sound):
-        #sound: a string descpripor for an array of sound activation times
-        #returns activation_frames: (a bool for every frame with True indicating that 
+        #sound: a string descriptor for an array of sound activation times
+        #returns activation_frames: a 0 or 1 for every frame with 1 indicating that 
         #frame is the first frame before a sound activation.
-        frame_duration/=1000
+        frame_duration/=1000 #convert from ms to seconds
         activation_times=None
         if sound == 'beat':
             activation_times=self.beat_times
